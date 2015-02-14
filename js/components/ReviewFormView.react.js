@@ -6,8 +6,12 @@ var ReviewFormView = React.createClass({
 		return (
 			<div className={classString}>
 				<form>
+				<div className="form-group">
+						<label for="review-title">Title</label>
+						<textarea className="form-control" name="review-content"></textarea>
+					</div>
 					<div className="form-group">
-						<label for="review-content">Review Content</label>
+						<label for="review-content">Review</label>
 						<textarea className="form-control" name="review-content"></textarea>
 					</div>
 					 <button type="submit" className="btn btn-default">Submit</button>

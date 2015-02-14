@@ -9,6 +9,9 @@ var RouteHandler = Router.RouteHandler;
 var AppView = require("./components/AppView.react");
 var DashboardView = require("./components/DashboardView.react");
 var ReviewView = require("./components/ReviewView.react");
+var InitialData = require('./InitialData');
+
+InitialData.init();
 
 var routes = (
   <Route name="app" path="/" handler={AppView}>
