@@ -1,0 +1,11 @@
+@(stuff: Seq[String])
+<h1> A list of stuff! </h1>
+
+<ul>
+	@stuff.map { something => 
+		<li>@something</li>
+	}
+</ul>
+
+
+
