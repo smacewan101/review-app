@@ -9,7 +9,7 @@ var NavbarView = React.createClass({
 	render: function () {
 		var actionButton;
 		if(this.props.loggedIn){
-			actionButton = <LogoutButtonView />;
+			actionButton = <LogoutButtonView userEmail={this.props.user.email} />;
 		}else{
 			actionButton = <LoginButtonView />;
 		}

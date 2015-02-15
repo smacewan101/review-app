@@ -12,7 +12,7 @@ var LogoutButtonView = React.createClass({
 
 	render: function(){
 		return (
-			<li>Logged in as Scott <button className="btn" onClick={this.logout}>Logout</button></li>
+			<li>Logged in as {this.props.userEmail} <button className="btn" onClick={this.logout}>Logout</button></li>
 		);
 	}
 

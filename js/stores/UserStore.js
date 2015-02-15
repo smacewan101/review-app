@@ -6,9 +6,13 @@ var ActionConstants = require("../constants/ActionConstants");
 
 var _user = null, _loggedIn = false;
 
-function login() {
+function loginSuccess(userData) {
   _loggedIn = true;
-  _user = UserApi.getUserData();
+  _user = userData;
+}
+
+function login(email, password) {
+  UserApi.loginUser(email, password);
 }
 
 function logout(){
@@ -22,6 +26,10 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
   // Return cart visibility state
   isLoggedIn: function() {
     return _loggedIn;
+  },
+
+  getUser: function(){
+    return _user;
   },
 
   // Emit Change event
@@ -48,12 +56,16 @@ AppDispatcher.register(function(payload) {
 
     // Respond to login action
     case ActionConstants.LOGIN:
-      login();
+      login(action.email, action.password);
       break;
 
     // Respond to login action
     case ActionConstants.LOGOUT:
       logout();
+      break;
+
+    case ActionConstants.LOGIN_SUCCESS:
+      loginSuccess(action.user);
       break;
   }
 

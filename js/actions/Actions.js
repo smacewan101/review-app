@@ -5,9 +5,11 @@ var ActionConstants = require('../constants/ActionConstants');
 var Actions = {
 
   // Receive inital product data
-  login: function() {
+  login: function(email, password) {
     AppDispatcher.handleAction({
-      actionType: ActionConstants.LOGIN
+      actionType: ActionConstants.LOGIN,
+      email: email,
+      password: password
     })
   },
 
@@ -15,6 +17,21 @@ var Actions = {
   logout: function() {
     AppDispatcher.handleAction({
       actionType: ActionConstants.LOGOUT
+    })
+  },
+
+  loginSucess: function(userData) {
+    AppDispatcher.handleAction({
+      actionType: ActionConstants.LOGIN_SUCCESS,
+      user: userData
+    })
+  },
+
+  setFailure: function(failureCode, failureMessage) {
+    AppDispatcher.handleAction({
+      actionType: ActionConstants.SET_FAILURE,
+      failureCode: failureCode,
+      failureMessage: failureMessage
     })
   }
 };

@@ -14,7 +14,9 @@ module.exports = {
     localStorage.setItem('user', JSON.stringify([
     {
       id: "1",
-      name: "Scott"
+      name: "Scott",
+      email: "wsmacewan101@gmail.com",
+      password: "password"
     }
     ]));
   }
