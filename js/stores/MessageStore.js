@@ -2,30 +2,30 @@ var _ = require('underscore');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require("../constants/ActionConstants");
-var FailureConstants = require("../constants/FailureConstants");
+var MessageCodeConstants = require("../constants/MessageCodeConstants");
 
-var _failures = {};
+var _messages = {};
 
-function setFailure(failureCode, failureMessage){
-	_failures[failureCode] = failureMessage;
+function setMessage(messageCode, messageText, messageType){
+	_messages[messageCode] = {messageText: messageText, messageType: messageType};
 }
 
-function clearFailure(failureCode){
-	delete _failures[failureCode];
+function clearMessage(messageCode){
+	delete _messages[messageCode];
 }
 
-var FailureStore = _.extend({}, EventEmitter.prototype, {
+var MessageStore = _.extend({}, EventEmitter.prototype, {
 
-	isSet: function(failureCode){
-		return (_failures[failureCode] != null);
+	isSet: function(messageCode){
+		return (_messages[messageCode] != null);
 	},
 
-	getFailureMessage: function(failureCode){
-		return _failures[failureCode];
+	getMessage: function(messageCode){
+		return _messages[messageCode];
 	},
 
-	getAllFailures: function(){
-		return _failures;
+	getAllMessages: function(){
+		return _messages;
 	},
 
 	// Emit Change event
@@ -51,21 +51,24 @@ AppDispatcher.register(function(payload) {
   switch(action.actionType) {
 
     // Respond to login action
-    case ActionConstants.SET_FAILURE:
-      setFailure(action.failureCode, action.failureMessage);
+    case ActionConstants.SET_MESSAGE:
+      setMessage(action.messageCode, action.messageText, action.messageType);
       break;
+
+	case ActionConstants.CLEAR_MESSAGE:
+		clearMessage(action.messageCode);
+		break;
 
     // Respond to login action
     case ActionConstants.LOGIN_SUCCESS:
-      clearFailure(FailureConstants.LOGIN_FAILED);
+      clearMessage(MessageCodeConstants.LOGIN_FAILED);
       break;
-
   }
 
   // If action was responded to, emit change event
-  FailureStore.emitChange();
+  MessageStore.emitChange();
   return true;
 
 });
 
-module.exports = FailureStore;
+module.exports = MessageStore;

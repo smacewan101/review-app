@@ -1,5 +1,6 @@
 var Actions = require('../actions/Actions');
-var FailureConstants = require('../constants/FailureConstants');
+var MessageCodeConstants = require('../constants/MessageCodeConstants');
+var MessageTypeConstants = require('../constants/MessageTypeConstants');
 
 function authenticate(correctPassword, password) {
 	return (correctPassword == password);
@@ -12,7 +13,7 @@ module.exports = {
 		if(authenticate(userData.password, password)){
 			setTimeout(function(){Actions.loginSucess(userData)}, 1);
 		}else{
-			setTimeout(function(){ Actions.setFailure(FailureConstants.LOGIN_FAILED, "Failed to authenticate, either your email or password is incorrect") }, 1);
+			setTimeout(function(){ Actions.setMessage(MessageCodeConstants.LOGIN_FAILED, "Failed to authenticate, either your email or password is incorrect", MessageTypeConstants.FAILURE ) }, 1);
 		}
 		return true
 	},

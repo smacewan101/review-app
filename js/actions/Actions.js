@@ -27,11 +27,12 @@ var Actions = {
     })
   },
 
-  setFailure: function(failureCode, failureMessage) {
+  setMessage: function(messageCode, messageText, messageType) {
     AppDispatcher.handleAction({
-      actionType: ActionConstants.SET_FAILURE,
-      failureCode: failureCode,
-      failureMessage: failureMessage
+      actionType: ActionConstants.SET_MESSAGE,
+      messageCode: messageCode,
+      messageText: messageText,
+      messageType: messageType
     })
   }
 };
