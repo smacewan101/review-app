@@ -6,12 +6,14 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import scala.collection.mutable.ListBuffer
 import play.api.db._
+import play.api.Play.current
+import anorm._ 
 
 
 object Review extends Controller {
-	
+
   case class Review(title: String, content:String) {
-		var id = 0 
+		var id:Long = 0 
 	}
 
   implicit val reviewWriter = new Writes[Review] {
@@ -33,17 +35,29 @@ object Review extends Controller {
 
 	var idx = 2
 
+	val ds = DB.getDataSource()
+
 	def show(id: Int) =  Action { 
-		Ok(Json.toJson(reviews.find(review => review.id == id)))
+		DB.withConnection { implicit conn => 
+			val firstRow = SQL("Select id, title, description From reviews Where id = {id}")
+				.on("id" -> id).apply().head
+			val title = firstRow[String]("title")
+			val content = firstRow[String]("content")
+			val review = new Review(title, content)
+			review.id = firstRow[Int]("id")
+			Ok(Json.toJson(review))
+		}
+		NotFound("Not found")
 	}
 
 	def create =  Action { request => 
 		request.body.asJson.map { json => 
 			json.validate[Review].map{
 				case r => { 
-					r.id = idx
-					reviews += r; 
-					idx += 1
+					DB.withConnection { implicit conn =>
+							val id: Option[Long] = SQL("insert into reviews(title, content) values ($r.title, $r.content)").executeInsert()
+							println(s"New Review created with id: $id")
+					}
 					Ok("Create")
 				}
 			}.recoverTotal {
@@ -55,7 +69,19 @@ object Review extends Controller {
 	}
 
   def list =  Action {
-		Ok(Json.toJson(reviews.toList))
+		var reviews = List[Review]()
+		DB.withConnection { implicit conn =>
+			val selectReviews = SQL("select * from reviews")
+			reviews = selectReviews().map(row => {
+					val title = row[String]("title")
+					val content = row[String]("content")
+					val review = new Review(title, content)
+					review.id = row[Long]("id")
+					review 
+				}
+			).toList
+		}
+		Ok(Json.toJson(reviews))
 	}
 
 	def preflight(all: String) = Action {
