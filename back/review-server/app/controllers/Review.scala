@@ -32,8 +32,8 @@ object Review extends Controller {
 
 	var idx = 2
 
-	def show(name: String) = Action { 
-		Ok(Json.toJson(reviews.find(review => review.name == name)))
+	def show(id: Int) = Action { 
+		Ok(Json.toJson(reviews.find(review => review.id == id)))
 	}
 
 	def create = Action { request => 
