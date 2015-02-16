@@ -34,6 +34,26 @@ var Actions = {
       messageText: messageText,
       messageType: messageType
     })
+  },
+
+  clearMessage: function(messageCode) {
+    AppDispatcher.handleAction({
+      actionType: ActionConstants.CLEAR_MESSAGE,
+      messageCode: messageCode
+    })
+  },
+
+  clearAllMessages: function(){
+    AppDispatcher.handleAction({
+      actionType: ActionConstants.CLEAR_ALL_MESSAGES      
+    })
+  },
+
+  postReview: function(reviewData){
+    AppDispatcher.handleAction({
+      actionType: ActionConstants.POST_REVIEW,
+      reviewData: reviewData
+    })
   }
 };
 

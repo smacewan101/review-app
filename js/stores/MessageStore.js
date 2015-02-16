@@ -14,6 +14,10 @@ function clearMessage(messageCode){
 	delete _messages[messageCode];
 }
 
+function clearAllMessages(){
+	_messages = {};
+}
+
 var MessageStore = _.extend({}, EventEmitter.prototype, {
 
 	isSet: function(messageCode){
@@ -59,10 +63,14 @@ AppDispatcher.register(function(payload) {
 		clearMessage(action.messageCode);
 		break;
 
+	case ActionConstants.CLEAR_ALL_MESSAGES:
+		clearAllMessages();
+		break;
+
     // Respond to login action
     case ActionConstants.LOGIN_SUCCESS:
-      clearMessage(MessageCodeConstants.LOGIN_FAILED);
-      break;
+		clearMessage(MessageCodeConstants.LOGIN_FAILED);
+		break;
   }
 
   // If action was responded to, emit change event

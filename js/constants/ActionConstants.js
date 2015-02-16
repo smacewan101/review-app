@@ -6,5 +6,7 @@ module.exports = keyMirror({
   LOGOUT: null,
   LOGIN_SUCCESS: null,
   SET_MESSAGE: null,
-  CLEAR_MESSAGE: null
+  CLEAR_MESSAGE: null,
+  CLEAR_ALL_MESSAGES: null,
+  POST_REVIEW: null
 });

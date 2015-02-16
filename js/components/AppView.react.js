@@ -4,6 +4,7 @@ var RouteHandler = Router.RouteHandler;
 
 var UserStore = require('../stores/UserStore');
 var MessageStore = require('../stores/MessageStore');
+var ReviewStore = require('../stores/ReviewStore');
 var NavbarView = require('./NavbarView.react');
 var MessageView = require('./MessageView.react.js');
 
@@ -24,12 +25,14 @@ var AppView = React.createClass({
 	componentDidMount: function() {
 		MessageStore.addChangeListener(this._onChange);
 		UserStore.addChangeListener(this._onChange);
+		ReviewStore.addChangeListener(this._onChange);
 	},
 
 	// Remove change listers from stores
 	componentWillUnmount: function() {
 		MessageStore.removeChangeListener(this._onChange);
 		UserStore.removeChangeListener(this._onChange);
+		ReviewStore.removeChangeListener(this._onChange);
 	},
 
 	render: function () {

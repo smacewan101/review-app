@@ -5,6 +5,7 @@ var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 var Route = Router.Route;
 var RouteHandler = Router.RouteHandler;
+var Actions = require("./actions/Actions");
 
 var AppView = require("./components/AppView.react");
 var DashboardView = require("./components/DashboardView.react");
@@ -21,5 +22,6 @@ var routes = (
 );
 
 Router.run(routes, function (Handler) {
-  React.render(<Handler/>, document.body);
+	Actions.clearAllMessages();
+  	React.render(<Handler/>, document.body);
 });
