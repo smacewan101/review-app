@@ -9,13 +9,16 @@ import scala.collection.mutable.ListBuffer
 
 object Review extends Controller {
 	
-  case class Review(name: String, description:String)	
+  case class Review(name: String, description:String) {
+		var id = 0 
+	}
 
   implicit val reviewWriter = new Writes[Review] {
 		def writes(r: Review): JsValue = {
 			Json.obj(
 				"name" -> r.name,
-				"description" -> r.description
+				"description" -> r.description,
+				"id" -> r.id
 			)
 		}
 	}
@@ -25,14 +28,23 @@ object Review extends Controller {
 		(__ \ "description").read[String]
 	)(Review) 
 
-	val reviews = ListBuffer[Review](
-			new Review("H",  "description and stuff like that")
-	)
+	val reviews = ListBuffer[Review]()
+
+	var idx = 2
+
+	def show(name: String) = Action { 
+		Ok(Json.toJson(reviews.find(review => review.name == name)))
+	}
 
 	def create = Action { request => 
 		request.body.asJson.map { json => 
 			json.validate[Review].map{
-				case r => reviews += r; Ok("Create")
+				case r => { 
+					r.id = idx
+					reviews += r; 
+					idx += 1
+					Ok("Create")
+				}
 			}.recoverTotal {
 				e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
 			}
@@ -44,5 +56,6 @@ object Review extends Controller {
   def list = Action {
 		Ok(Json.toJson(reviews.toList))
 	}
+
 
 }

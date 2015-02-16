@@ -6,6 +6,7 @@
 GET     /                           controllers.Application.index
 GET 	/test						controllers.Application.test
 GET 	/reviews 					controllers.Review.list
+GET 	/review/:name 				controllers.Review.show(name:String)
 POST 	/review/create 				controllers.Review.create
 
 # Map static resources from the /public folder to the /assets URL path
