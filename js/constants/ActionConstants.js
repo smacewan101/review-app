@@ -8,5 +8,6 @@ module.exports = keyMirror({
   SET_MESSAGE: null,
   CLEAR_MESSAGE: null,
   CLEAR_ALL_MESSAGES: null,
-  POST_REVIEW: null
+  POST_REVIEW: null,
+  SAVE_NEW_REVIEW: null
 });

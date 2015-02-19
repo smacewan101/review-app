@@ -18,7 +18,8 @@ var NavbarView = React.createClass({
 			<nav className="navbar navbar-default">
 				<ul className="nav navbar-nav">
 					<li><Link to="app">Dashboard</Link></li>
-					<li><Link to="review">Review</Link></li>
+					<li><Link to="createReview">Review</Link></li>
+					<li><Link to="reviewDashboard">Browse Reviews</Link></li>
 					{actionButton}
 				</ul>
 			</nav>

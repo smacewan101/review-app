@@ -54,6 +54,13 @@ var Actions = {
       actionType: ActionConstants.POST_REVIEW,
       reviewData: reviewData
     })
+  },
+
+  saveNewReview: function(reviewData){
+    AppDispatcher.handleAction({
+      actionType: ActionConstants.SAVE_NEW_REVIEW,
+      reviewData: reviewData
+    })
   }
 };
 

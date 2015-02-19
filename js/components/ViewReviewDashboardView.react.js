@@ -2,13 +2,16 @@ var React = require('react');
 var ReviewFormView = require('./ReviewFormView.react');
 var SidebarRightView = require('./SidebarRightView.react');
 var ReviewStore = require('../stores/ReviewStore');
+var Router = require('react-router');
+var Link = Router.Link;
 
 function getState(){
 	return {
 		reviews: ReviewStore.getAllReviews().reverse()
 	}
 }
-var ReviewView = React.createClass({
+var ViewReviewDashboardView = React.createClass({
+	mixins: [Router.State],
 	getInitialState: function(){
 		return getState();
 	},
@@ -24,11 +27,18 @@ var ReviewView = React.createClass({
 	},
 
 	render: function () {
+		var reviews = this.state.reviews;
 		return (
 			<div className="row">
-				<h1>This is the Review Page</h1>
-				<ReviewFormView cssWidth="9"/>
-				<SidebarRightView reviews={this.state.reviews} cssWidth="3"/>
+				<h1>Browse Reviews</h1>
+				{Object.keys(reviews).map(function(review){
+					return(
+						<div key={review}>
+							<h3><Link to="review" params={{reviewId: reviews[review].id}}>{reviews[review].title}</Link></h3>
+							<p>{reviews[review].content.substring(0,15) + "..."}</p>
+						</div>
+					)
+				})}
 			</div>
 		);
 	},
@@ -38,4 +48,4 @@ var ReviewView = React.createClass({
 	}
 });
 
-module.exports = ReviewView;
+module.exports = ViewReviewDashboardView;

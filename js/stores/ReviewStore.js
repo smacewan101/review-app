@@ -5,24 +5,21 @@ var ActionConstants = require("../constants/ActionConstants");
 var ReviewApi = require('../utils/ReviewApi');
 var MessageCodeConstants = require("../constants/MessageCodeConstants");
 
-var _messages = {};
+var _reviews = ReviewApi.getReviewData();
 
 function postReview(reviewData){
 	ReviewApi.postReview(reviewData);
 }
 
+function saveNewReview(reviewData){
+	reviewData.id = _reviews.length + 1;
+	ReviewApi.saveReview(reviewData);
+	_reviews = ReviewApi.getReviewData();
+}
+
 var ReviewStore = _.extend({}, EventEmitter.prototype, {
-
-	isSet: function(messageCode){
-		return (_messages[messageCode] != null);
-	},
-
-	getMessage: function(messageCode){
-		return _messages[messageCode];
-	},
-
-	getAllMessages: function(){
-		return _messages;
+	getAllReviews: function(){
+		return _reviews;
 	},
 
 	// Emit Change event
@@ -48,6 +45,10 @@ AppDispatcher.register(function(payload) {
 
     case ActionConstants.POST_REVIEW:
 		postReview(action.reviewData);
+		break;
+
+	case ActionConstants.SAVE_NEW_REVIEW:
+		saveNewReview(action.reviewData);
 		break;
   }
 
