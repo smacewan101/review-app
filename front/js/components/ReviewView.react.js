@@ -4,12 +4,17 @@ var SidebarRightView = require('./SidebarRightView.react');
 var ReviewStore = require('../stores/ReviewStore');
 
 function getState(){
+	var reviews = ReviewStore.getAllReviews();
+	if(reviews.length > 0){
+		reviews = reviews.reverse();
+	}
 	return {
-		reviews: ReviewStore.getAllReviews().reverse()
+		reviews: reviews
 	}
 }
 var ReviewView = React.createClass({
 	getInitialState: function(){
+		ReviewStore.reinitialize();
 		return getState();
 	},
 

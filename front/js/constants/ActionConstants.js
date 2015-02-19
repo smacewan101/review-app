@@ -9,5 +9,7 @@ module.exports = keyMirror({
   CLEAR_MESSAGE: null,
   CLEAR_ALL_MESSAGES: null,
   POST_REVIEW: null,
-  SAVE_NEW_REVIEW: null
+  SAVE_NEW_REVIEW: null,
+  SET_CURRENT_REVIEW: null,
+  SET_REVIEWS: null
 });

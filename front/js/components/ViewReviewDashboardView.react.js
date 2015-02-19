@@ -6,13 +6,18 @@ var Router = require('react-router');
 var Link = Router.Link;
 
 function getState(){
+	var reviews = ReviewStore.getAllReviews();
+	if(reviews.length > 0){
+		reviews = reviews.reverse();
+	}
 	return {
-		reviews: ReviewStore.getAllReviews().reverse()
+		reviews: reviews
 	}
 }
 var ViewReviewDashboardView = React.createClass({
 	mixins: [Router.State],
 	getInitialState: function(){
+		ReviewStore.reinitialize();
 		return getState();
 	},
 

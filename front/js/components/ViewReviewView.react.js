@@ -2,16 +2,24 @@ var React = require('react');
 var ReviewFormView = require('./ReviewFormView.react');
 var SidebarRightView = require('./SidebarRightView.react');
 var ReviewStore = require('../stores/ReviewStore');
+var ReviewApi = require('../utils/ReviewApi');
 var Router = require('react-router');
 
 function getState(){
+	var reviews = ReviewStore.getAllReviews();
+	if(reviews.length > 0){
+		reviews = reviews.reverse();
+	}
 	return {
-		review: ReviewStore.getAllReviews().reverse()
+		reviews: reviews,
+		currentReview: ReviewStore.getCurrentReview()
 	}
 }
+
 var ViewReviewView = React.createClass({
 	mixins: [Router.State],
 	getInitialState: function(){
+		ReviewStore.reinitialize(this.getParams().reviewId);
 		return getState();
 	},
 
@@ -26,9 +34,20 @@ var ViewReviewView = React.createClass({
 	},
 
 	render: function () {
+		var reviewView;
+		if(this.state.currentReview){
+			reviewView = (<div className="col-md-9">
+					<h3>{this.state.currentReview.title}</h3>
+					<div>{this.state.currentReview.content}</div>
+				</div>);
+		}else{
+			reivewView = (<div className="col-md-9"></div>);
+		}
 		return (
 			<div className="row">
 				<h1>View a review</h1>
+				{reviewView}
+				<SidebarRightView reviews={this.state.reviews} />
 			</div>
 		);
 	},

@@ -5,7 +5,8 @@ var ActionConstants = require("../constants/ActionConstants");
 var ReviewApi = require('../utils/ReviewApi');
 var MessageCodeConstants = require("../constants/MessageCodeConstants");
 
-var _reviews = ReviewApi.getReviewData();
+var _reviews = {};
+var _currentReview = null;
 
 function postReview(reviewData){
 	ReviewApi.postReview(reviewData);
@@ -14,10 +15,36 @@ function postReview(reviewData){
 function saveNewReview(reviewData){
 	reviewData.id = _reviews.length + 1;
 	ReviewApi.saveReview(reviewData);
-	_reviews = ReviewApi.getReviewData();
+	ReviewApi.getReviews();
+}
+
+function setCurrentReview(review){
+	_currentReview = review;
+}
+
+function setReviewCollection(reviewData){
+	if(reviewData != undefined){
+		_reviews = reviewData;
+	}else{
+		_reviews = {};
+	}
+	
 }
 
 var ReviewStore = _.extend({}, EventEmitter.prototype, {
+	reinitialize: function(reviewId){
+		_currentReview = null;
+		_reviews = {};
+		ReviewApi.getReviews();
+		if(reviewId != null){
+			ReviewApi.getReview(reviewId);	
+		}
+	},
+
+	getCurrentReview: function(){
+		return _currentReview;
+	},
+
 	getAllReviews: function(){
 		return _reviews;
 	},
@@ -50,6 +77,15 @@ AppDispatcher.register(function(payload) {
 	case ActionConstants.SAVE_NEW_REVIEW:
 		saveNewReview(action.reviewData);
 		break;
+
+	case ActionConstants.SET_CURRENT_REVIEW:
+		setCurrentReview(action.reviewData);
+		break;
+
+	case ActionConstants.SET_REVIEWS:
+		setReviewCollection(action.reviewsData);
+		break;
+
   }
 
   // If action was responded to, emit change event

@@ -61,6 +61,20 @@ var Actions = {
       actionType: ActionConstants.SAVE_NEW_REVIEW,
       reviewData: reviewData
     })
+  },
+
+  setCurrentReview: function(reviewData){
+    AppDispatcher.handleAction({
+      actionType: ActionConstants.SET_CURRENT_REVIEW,
+      reviewData: reviewData
+    })
+  },
+
+  setReviews: function(reviewsData){
+    AppDispatcher.handleAction({
+      actionType: ActionConstants.SET_REVIEWS,
+      reviewsData: reviewsData
+    })
   }
 };
 
